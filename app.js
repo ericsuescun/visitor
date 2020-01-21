@@ -46,11 +46,9 @@ app.get('/', (req, res) => {
 		console.log(visitors);
 		res.write('<table>');
 		res.write('<thead>');
-		res.write('<tr>');
 		res.write('<th>Id</th>');
 		res.write('<th>Name</th>');
 		res.write('<th>Visits</th>');
-		res.write('</tr>');
 		res.write('</thead>');
 		visitors.map((visitor, index) => {
 			res.write('<tr>');
