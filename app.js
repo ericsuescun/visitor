@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
 		res.write('<th>Name</th>');
 		res.write('<th>Visits</th>');
 		res.write('</thead>');
+		res.write('<tbody>');
 		visitors.map((visitor, index) => {
 			res.write('<tr>');
 			res.write(`<td>${visitor._id}</td>`);
@@ -57,6 +58,7 @@ app.get('/', (req, res) => {
 			res.write(`<td>${visitor.count}</td>`);
 			res.write('</tr>');
 		});
+		res.write('</tbody>');
 		res.write('</table>');
 		res.end();
 	});
