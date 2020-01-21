@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views');
+
 var mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/mongo-2', { useNewUrlParser: true });
 
@@ -34,12 +37,33 @@ app.get('/', (req, res) => {
 		Visitor.create({ name: nombre, count: conteo + 1 }, function(err) {
 			if(err) {
 				return console.error(err);	
-			} else {
-				res.send(`<h1>El visitante de nombre: ${nombre} fue almacenado con éxito, número ${conteo}</h1>`);
 			}
 		});
 	});
 
+	let allVisitors = Visitor.find(function(err, visitors) {
+		if(err) return console.error(err);
+		console.log(visitors);
+		res.write('<table>');
+		res.write('<thead>');
+		res.write('<tr>');
+		res.write('<th>Id</th>');
+		res.write('<th>Name</th>');
+		res.write('<th>Visits</th>');
+		res.write('</tr>');
+		res.write('</thead>');
+		visitors.map((visitor, index) => {
+			res.write('<tr>');
+			res.write(`<td>${visitor._id}</td>`);
+			res.write(`<td>${visitor.name}</td>`);
+			res.write(`<td>${visitor.count}</td>`);
+			res.write('</tr>');
+		});
+		res.write('</table>');
+		res.end();
+	});
+
+	// res.render('index', { visitors: allVisitors });
 
 })
 

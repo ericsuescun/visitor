@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	table
+		thead
+			tr
+				th Id
+				th Name
+				th Visits
+		tbody
+			each visitor in visitors	
+				tr
+					td= visitor
