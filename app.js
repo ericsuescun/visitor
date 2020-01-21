@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 	let conteo = 0;
 
 	if(!nombre || nombre.length === 0) {
-		nombre = 'Anonimo';
+		nombre = 'Anónimo';
 		conteo = 0;
 	}
 	
