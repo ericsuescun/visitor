@@ -22,6 +22,8 @@ app.get('/', (req, res) => {
 		nombre = 'Anónimo';
 		conteo = 0;
 	}
+
+	res.header("Content-Type", "text/html; charset=utf-8");
 	
 	Visitor.find({ name: nombre }, function(err, visitors) {
 		if(err) return console.error(err);
