@@ -13,53 +13,55 @@ var schema = mongoose.Schema({
 
 var Visitor = mongoose.model("Visitor", schema);
 
-let conteo = 0;
-
 app.get('/', (req, res) => {
 
 	let nombre = req.query.name;
-	
-	let oneVisitor = [];
+	let conteo = 0;
 
+	if(!nombre || nombre.length === 0) {
+		nombre = 'Anonimo';
+		conteo = 0;
+	}
+	
 	Visitor.find({ name: nombre }, function(err, visitors) {
 		if(err) return console.error(err);
-		console.log('visitors.length: ' + visitors.length);
 		conteo = conteo + visitors.length;
-		console.log('conteo: ' + conteo);
-		if(!nombre || nombre.length === 0) {
-			nombre = 'Anónimo';
+
+		if(nombre === "Anonimo") {
 			conteo = 0;
 		}
+
+		console.log('Creando... Nombre: ' + nombre + ' , conteo: ' + conteo);
 
 		Visitor.create({ name: nombre, count: conteo + 1 }, function(err) {
 			if(err) {
 				return console.error(err);	
+			} else {
+				Visitor.find(function(err, visitors2) {
+					if(err) return console.error(err);
+					console.log(visitors2);
+					res.write('<table>');
+						res.write('<thead>');
+							res.write('<tr>');
+								res.write('<th>Id</th>');
+								res.write('<th>Name</th>');
+								res.write('<th>Visits</th>');
+							res.write('</tr>');
+						res.write('</thead>');
+						res.write('<tbody>');
+					visitors2.map((visitor, index) => {
+							res.write('<tr>');
+								res.write(`<td>${visitor._id}</td>`);
+								res.write(`<td>${visitor.name}</td>`);
+								res.write(`<td>${visitor.count}</td>`);
+							res.write('</tr>');
+					});
+						res.write('</tbody>');
+					res.write('</table>');
+					res.end();
+				});
 			}
 		});
-	});
-
-	let allVisitors = Visitor.find(function(err, visitors) {
-		if(err) return console.error(err);
-		console.log(visitors);
-		res.write('<table>');
-			res.write('<thead>');
-				res.write('<tr>');
-					res.write('<th>Id</th>');
-					res.write('<th>Name</th>');
-					res.write('<th>Visits</th>');
-				res.write('</tr>');
-			res.write('</thead>');
-			res.write('<tbody>');
-		visitors.map((visitor, index) => {
-				res.write('<tr>');
-					res.write(`<td>${visitor._id}</td>`);
-					res.write(`<td>${visitor.name}</td>`);
-					res.write(`<td>${visitor.count}</td>`);
-				res.write('</tr>');
-		});
-			res.write('</tbody>');
-		res.write('</table>');
-		res.end();
 	});
 
 	// res.render('index', { visitors: allVisitors });
