@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 		if(err) return console.error(err);
 		conteo = conteo + visitors.length;
 
-		if(nombre === "Anonimo") {
+		if(nombre === "Anónimo") {
 			conteo = 0;
 		}
 
