@@ -1,9 +1,6 @@
 const express = require('express');
 const app = express();
 
-app.set('view engine', 'pug');
-app.set('views', './views');
-
 var mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/mongo-2', { useNewUrlParser: true });
 
